@@ -18,7 +18,10 @@ function Dashboard() {
           flex: 3,
         }}
       >
-        <GraphCanvas setSelectedFile={setSelectedFile} />
+        <GraphCanvas 
+         nodes = {nodes} 
+         edges = {edges}
+         setSelectedFile={setSelectedFile} />
       </div>
 
       <div
