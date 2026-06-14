@@ -1,7 +1,11 @@
+import { useState } from "react";
+
 import GraphCanvas from "../components/GraphCanvas";
 import SummaryPanel from "../components/SummaryPanel";
 
 function Dashboard() {
+  const [selectedFile, setSelectedFile] = useState(null);
+
   return (
     <div
       style={{
@@ -14,7 +18,7 @@ function Dashboard() {
           flex: 3,
         }}
       >
-        <GraphCanvas />
+        <GraphCanvas setSelectedFile={setSelectedFile} />
       </div>
 
       <div
@@ -23,7 +27,7 @@ function Dashboard() {
           borderLeft: "1px solid #ddd",
         }}
       >
-        <SummaryPanel />
+        <SummaryPanel selectedFile={selectedFile} />
       </div>
     </div>
   );

@@ -65,11 +65,15 @@ const edges = [
   },
 ];
 
-function GraphCanvas() {
+function GraphCanvas({ setSelectedFile }) {
+  const onNodeClick = (event, node) => {
+    setSelectedFile(node.data);
+  };
+
   return (
     <div
       style={{
-        width: "100vw",
+        width: "100%",
         height: "100vh",
       }}
     >
@@ -77,6 +81,7 @@ function GraphCanvas() {
         nodes={nodes}
         edges={edges}
         nodeTypes={nodeTypes}
+        onNodeClick={onNodeClick}
         fitView
       />
     </div>
