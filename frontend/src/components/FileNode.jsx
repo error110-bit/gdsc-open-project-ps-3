@@ -5,7 +5,9 @@ function FileNode({ data }) {
     <div
       style={{
         background: "white",
-        border: "1px solid #ccc",
+        border: data.isSelected
+         ? "3px solid #2563eb"
+         : "1px solid #ccc",
         borderRadius: "8px",
         padding: "12px",
         minWidth: "150px",

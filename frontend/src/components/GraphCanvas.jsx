@@ -8,10 +8,21 @@ const nodeTypes = {
 };
 
 
-function GraphCanvas({ nodes, edges, setSelectedFile }) {
+function GraphCanvas({ nodes, edges, setSelectedFile, selectedNodeId, setSelectedNodeId }) {
   const onNodeClick = (event, node) => {
     setSelectedFile(node.data);
+    setSelectedNodeId(node.id);
   };
+
+  const enhancedNodes = nodes.map((node) => ({
+  ...node,
+
+  data: {
+    ...node.data,
+
+    isSelected: node.id === selectedNodeId,
+   },
+  }));
 
   return (
     <div
@@ -21,7 +32,7 @@ function GraphCanvas({ nodes, edges, setSelectedFile }) {
       }}
     >
       <ReactFlow
-        nodes={nodes}
+        nodes={enhancedNodes}
         edges={edges}
         nodeTypes={nodeTypes}
         onNodeClick={onNodeClick}
