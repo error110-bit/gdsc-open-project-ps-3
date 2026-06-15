@@ -6,7 +6,7 @@ import SummaryPanel from "../components/SummaryPanel";
 function Dashboard() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedNodeId, setSelectedNodeId] = useState(null);
-  const nodes = [
+  const {nodes , setNodes} = useState([
   {
     id: "1",
     type: "fileNode",
@@ -48,9 +48,9 @@ function Dashboard() {
       imports: 5,
     },
   },
-];
+]);
 
-const edges = [
+const {edges, setEdges} = useState([
   {
     id: "e1-2",
     source: "1",
@@ -62,7 +62,7 @@ const edges = [
     source: "1",
     target: "3",
   },
-];
+]);
 
   return (
     <div
