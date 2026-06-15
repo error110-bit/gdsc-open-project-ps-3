@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState , useEffect } from "react";
 
 import GraphCanvas from "../components/GraphCanvas";
 import SummaryPanel from "../components/SummaryPanel";
+import { getRepositoryGraph } from "../api/repositoryApi";
 
 function Dashboard() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -48,21 +49,32 @@ function Dashboard() {
       imports: 5,
     },
   },
-]);
+  ]);
 
-const {edges, setEdges} = useState([
-  {
-    id: "e1-2",
-    source: "1",
-    target: "2",
-  },
+  const {edges, setEdges} = useState([
+    {
+      id: "e1-2",
+      source: "1",
+      target: "2",
+    },
 
-  {
-    id: "e1-3",
-    source: "1",
-    target: "3",
-  },
-]);
+    {
+      id: "e1-3",
+      source: "1",
+      target: "3",
+    },
+  ]);
+
+  useEffect(() => {
+   const loadGraph = async () => {
+     const data = await getRepositoryGraph();
+
+     setNodes(data.nodes);
+     setEdges(data.edges);
+     };
+
+     loadGraph();
+  }, []);
 
   return (
     <div
