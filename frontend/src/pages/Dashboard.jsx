@@ -1,79 +1,35 @@
-import { useState , useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import GraphCanvas from "../components/GraphCanvas";
 import SummaryPanel from "../components/SummaryPanel";
+
 import { getRepositoryGraph } from "../api/repositoryApi";
+import { adaptGraphData } from "../adapters/graphAdapter";
 
 function Dashboard() {
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [nodes, setNodes] = useState([]);
+  const [edges, setEdges] = useState([]);
+
   const [selectedNodeId, setSelectedNodeId] = useState(null);
-  const [nodes, setNodes] = useState([
-  {
-    id: "1",
-    type: "fileNode",
-    position: {
-      x: 100,
-      y: 100,
-    },
-    data: {
-      name: "main.py",
-      loc: 245,
-      imports: 8,
-    },
-  },
-
-  {
-    id: "2",
-    type: "fileNode",
-    position: {
-      x: 450,
-      y: 100,
-    },
-    data: {
-      name: "db.py",
-      loc: 120,
-      imports: 3,
-    },
-  },
-
-  {
-    id: "3",
-    type: "fileNode",
-    position: {
-      x: 275,
-      y: 300,
-    },
-    data: {
-      name: "auth.py",
-      loc: 180,
-      imports: 5,
-    },
-  },
-  ]);
-
-  const [edges, setEdges] = useState([
-    {
-      id: "e1-2",
-      source: "1",
-      target: "2",
-    },
-
-    {
-      id: "e1-3",
-      source: "1",
-      target: "3",
-    },
-  ]);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
-   const loadGraph = async () => {
-     const data = await getRepositoryGraph();
+    async function loadGraph() {
+      try {
+        const backendGraph = await getRepositoryGraph(
+          "/home/falcon/b29-drf-assgn_maggie_aqua"
+        );
 
-     setNodes(data.nodes);
-     setEdges(data.edges);
-     };
+        const graph = adaptGraphData(backendGraph);
 
-     loadGraph();
+        setNodes(graph.nodes);
+        setEdges(graph.edges);
+      } catch (error) {
+        console.error("Failed to load repository graph:", error);
+      }
+    }
+
+    loadGraph();
   }, []);
 
   return (
@@ -88,12 +44,13 @@ function Dashboard() {
           flex: 3,
         }}
       >
-        <GraphCanvas 
-         nodes = {nodes} 
-         edges = {edges}
-         selectedNodeId={selectedNodeId}
-         setSelectedNodeId={setSelectedNodeId}
-         setSelectedFile={setSelectedFile} />
+        <GraphCanvas
+          nodes={nodes}
+          edges={edges}
+          selectedNodeId={selectedNodeId}
+          setSelectedNodeId={setSelectedNodeId}
+          setSelectedFile={setSelectedFile}
+        />
       </div>
 
       <div

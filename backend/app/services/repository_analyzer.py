@@ -26,4 +26,5 @@ def analyze_repository(path):
                 "dependencies": get_dependencies(file["path"]),
             }
         )
-        return analyzed_files
+
+    return analyzed_files

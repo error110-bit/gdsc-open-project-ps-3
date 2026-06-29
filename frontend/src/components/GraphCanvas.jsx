@@ -7,21 +7,25 @@ const nodeTypes = {
   fileNode: FileNode,
 };
 
-
-function GraphCanvas({ nodes, edges, setSelectedFile, selectedNodeId, setSelectedNodeId }) {
-  const onNodeClick = (event, node) => {
-    setSelectedFile(node.data);
+function GraphCanvas({
+  nodes,
+  edges,
+  selectedNodeId,
+  setSelectedNodeId,
+  setSelectedFile,
+}) {
+  const onNodeClick = (_, node) => {
     setSelectedNodeId(node.id);
+    setSelectedFile(node.data);
   };
 
   const enhancedNodes = nodes.map((node) => ({
-  ...node,
+    ...node,
 
-  data: {
-    ...node.data,
-
-    isSelected: node.id === selectedNodeId,
-   },
+    data: {
+      ...node.data,
+      isSelected: node.id === selectedNodeId,
+    },
   }));
 
   return (
