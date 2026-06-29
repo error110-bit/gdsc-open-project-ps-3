@@ -1,35 +1,45 @@
 import { Handle, Position } from "reactflow";
 
+import "../styles/FileNode.css";
+
 function FileNode({ data }) {
   return (
     <div
-      style={{
-        background: "white",
-        border: data.isSelected
-         ? "3px solid #2563eb"
-         : "1px solid #ccc",
-        borderRadius: "8px",
-        padding: "12px",
-        minWidth: "150px",
-        boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-      }}
+      className={`file-node ${data.isSelected ? "selected" : ""}`}
     >
       <Handle
         type="target"
         position={Position.Top}
       />
 
-      <h4 style={{ margin: "0 0 10px 0" }}>
+      <h4
+        className="file-name"
+        title={data.name}
+      >
         {data.name}
       </h4>
 
-      <p style={{ margin: "4px 0" }}>
-        LOC: {data.loc}
-      </p>
+      <div className="file-metrics">
+        <div className="metric">
+          <span className="metric-label">LOC</span>
+          <span className="metric-value">{data.loc}</span>
+        </div>
 
-      <p style={{ margin: "4px 0" }}>
-        Imports: {data.imports}
-      </p>
+        <div className="metric">
+          <span className="metric-label">Functions</span>
+          <span className="metric-value">{data.functions}</span>
+        </div>
+
+        <div className="metric">
+          <span className="metric-label">Classes</span>
+          <span className="metric-value">{data.classes}</span>
+        </div>
+
+        <div className="metric">
+          <span className="metric-label">Complexity</span>
+          <span className="metric-value">{data.complexity}</span>
+        </div>
+      </div>
 
       <Handle
         type="source"

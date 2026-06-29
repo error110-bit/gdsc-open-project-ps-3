@@ -1,56 +1,115 @@
+import "../styles/SummaryPanel.css";
+
 function SummaryPanel({ selectedFile }) {
   if (!selectedFile) {
     return (
-      <div style={{ padding: "20px" }}>
-        <h2>File Information</h2>
-        <p>Select a file to view its details.</p>
+      <div className="summary-panel">
+        <div className="summary-empty">
+          <h2>📄 File Information</h2>
+
+          <p>
+            Select a file from the graph to view
+            <br />
+            its metrics and details.
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>{selectedFile.name}</h2>
+    <div className="summary-panel">
+      <h2 className="summary-title">
+        {selectedFile.name}
+      </h2>
 
-      <p>
-        <strong>Path:</strong> {selectedFile.path}
-      </p>
+      <div className="summary-path">
+        {selectedFile.path}
+      </div>
 
-      <hr />
+      <hr className="summary-divider" />
 
-      <h3>Metrics</h3>
+      <div className="metrics-grid">
+        <div className="metric-card">
+          <div className="metric-card-title">
+            Lines of Code
+          </div>
 
-      <p>
-        <strong>Lines of Code:</strong> {selectedFile.loc}
-      </p>
+          <div className="metric-card-value">
+            {selectedFile.loc}
+          </div>
+        </div>
 
-      <p>
-        <strong>Imports:</strong> {selectedFile.imports}
-      </p>
+        <div className="metric-card">
+          <div className="metric-card-title">
+            Imports
+          </div>
 
-      <p>
-        <strong>Functions:</strong> {selectedFile.functions}
-      </p>
+          <div className="metric-card-value">
+            {selectedFile.imports}
+          </div>
+        </div>
 
-      <p>
-        <strong>Classes:</strong> {selectedFile.classes}
-      </p>
+        <div className="metric-card">
+          <div className="metric-card-title">
+            Functions
+          </div>
 
-      <p>
-        <strong>Loops:</strong> {selectedFile.loops}
-      </p>
+          <div className="metric-card-value">
+            {selectedFile.functions}
+          </div>
+        </div>
 
-      <p>
-        <strong>Branches:</strong> {selectedFile.branches}
-      </p>
+        <div className="metric-card">
+          <div className="metric-card-title">
+            Classes
+          </div>
 
-      <p>
-        <strong>Try Blocks:</strong> {selectedFile.tryBlocks}
-      </p>
+          <div className="metric-card-value">
+            {selectedFile.classes}
+          </div>
+        </div>
 
-      <p>
-        <strong>Complexity Score:</strong> {selectedFile.complexity}
-      </p>
+        <div className="metric-card">
+          <div className="metric-card-title">
+            Loops
+          </div>
+
+          <div className="metric-card-value">
+            {selectedFile.loops}
+          </div>
+        </div>
+
+        <div className="metric-card">
+          <div className="metric-card-title">
+            Branches
+          </div>
+
+          <div className="metric-card-value">
+            {selectedFile.branches}
+          </div>
+        </div>
+
+        <div className="metric-card">
+          <div className="metric-card-title">
+            Try Blocks
+          </div>
+
+          <div className="metric-card-value">
+            {selectedFile.tryBlocks}
+          </div>
+        </div>
+
+        <div className="metric-card">
+          <div className="metric-card-title">
+            Complexity
+          </div>
+
+          <div className="metric-card-value">
+            {selectedFile.complexity}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

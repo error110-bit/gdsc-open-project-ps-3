@@ -1,4 +1,8 @@
-import ReactFlow from "reactflow";
+import ReactFlow, {
+  Background,
+  Controls,
+  MiniMap,
+} from "reactflow";
 import "reactflow/dist/style.css";
 
 import FileNode from "./FileNode";
@@ -41,7 +45,11 @@ function GraphCanvas({
         nodeTypes={nodeTypes}
         onNodeClick={onNodeClick}
         fitView
-      />
+      >
+        <Background />
+        <MiniMap />
+        <Controls />
+      </ReactFlow>
     </div>
   );
 }

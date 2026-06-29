@@ -15,17 +15,35 @@ IGNORED_DIRECTORIES = {
 }
 
 
-def scan_repository(path):
+def scan_repository(
+    path,
+    max_files=100,
+    ignore_migrations=True,
+    ignore_tests=True,
+):
     files = []
 
     for root, dirs, filenames in os.walk(path):
-        # Prevent os.walk from descending into ignored directories
         dirs[:] = [d for d in dirs if d not in IGNORED_DIRECTORIES]
 
-        for filename in filenames:
+        if ignore_migrations and "migrations" in root.split(os.sep):
+            continue
 
+        if ignore_tests:
+            folder_names = root.lower().split(os.sep)
+
+            if any(
+                name.startswith("test")
+                for name in folder_names
+            ):
+                continue
+
+        for filename in filenames:
             if os.path.splitext(filename)[1] not in SUPPORTED_EXTENSIONS:
-                 continue
+                continue
+
+            if ignore_tests and filename.lower().startswith("test"):
+                continue
 
             absolute_path = os.path.join(root, filename)
 
@@ -41,5 +59,8 @@ def scan_repository(path):
                     "relative_path": relative_path,
                 }
             )
+
+            if len(files) >= max_files:
+                return files
 
     return files

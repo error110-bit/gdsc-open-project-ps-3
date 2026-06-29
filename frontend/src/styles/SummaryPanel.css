@@ -1,0 +1,58 @@
+.summary-panel {
+  padding: 20px;
+  background: white;
+  height: 100%;
+}
+
+.summary-empty {
+  color: #6b7280;
+  text-align: center;
+  margin-top: 40px;
+  line-height: 1.6;
+}
+
+.summary-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  word-break: break-word;
+}
+
+.summary-path {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #6b7280;
+  word-break: break-all;
+}
+
+.summary-divider {
+  margin: 20px 0;
+  border: none;
+  border-top: 1px solid #e5e7eb;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.metric-card {
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.metric-card-title {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.metric-card-value {
+  margin-top: 6px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
+}
