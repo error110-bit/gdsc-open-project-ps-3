@@ -1,43 +1,21 @@
-from fastapi import APIRouter, Query
-from app.services.scanner import scan_repository
-from app.services.metrics import count_lines
-from app.services.dependency_parser import get_dependencies
+from fastapi import APIRouter
+
+from app.models.repository import RepositoryRequest
+
+from app.services.repository_analyzer import analyze_repository
 from app.services.graph_builder import build_graph
 
 router = APIRouter()
 
-@router.get("/scan")
-def scan(path: str = Query(...)):
+@router.post("/scan")
+def scan(request: RepositoryRequest):
 
-    files = scan_repository(path)
+    return analyze_repository(request.path)
 
-    result = []
+@router.post("/graph")
+def graph(request: RepositoryRequest):
 
-    for file in files:
+    analyzed_files = analyze_repository(request.path)
 
-        result.append({
-            "name": file["name"],
-            "path": file["path"],
-            "loc": count_lines(file["path"]),
-            "dependencies": get_dependencies(file["path"])
-        })
+    return build_graph(analyzed_files)
 
-    return result
-
-@router.get("/graph")
-def graph(path: str = Query(...)):
-
-    files = scan_repository(path)
-
-    result = []
-
-    for file in files:
-
-        result.append({
-            "name": file["name"],
-            "path": file["path"],
-            "loc": count_lines(file["path"]),
-            "dependencies": get_dependencies(file["path"])
-        })
-
-    return build_graph(result)

@@ -10,3 +10,4 @@ app.include_router(summary_router)
 @app.get("/")
 def home():
     return {"message": "Backend is running!"}
+    

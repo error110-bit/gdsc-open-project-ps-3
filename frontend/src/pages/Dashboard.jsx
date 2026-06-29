@@ -7,7 +7,7 @@ import { getRepositoryGraph } from "../api/repositoryApi";
 function Dashboard() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedNodeId, setSelectedNodeId] = useState(null);
-  const {nodes , setNodes} = useState([
+  const [nodes, setNodes] = useState([
   {
     id: "1",
     type: "fileNode",
@@ -51,7 +51,7 @@ function Dashboard() {
   },
   ]);
 
-  const {edges, setEdges} = useState([
+  const [edges, setEdges] = useState([
     {
       id: "e1-2",
       source: "1",
