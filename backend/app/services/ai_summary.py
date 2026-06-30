@@ -1,4 +1,6 @@
+import json
 import os
+import re
 
 from dotenv import load_dotenv
 import google.generativeai as genai
@@ -13,6 +15,10 @@ model = genai.GenerativeModel("gemini-2.5-flash")
 
 
 def generate_summary(file_content):
+
+    # Prevent huge prompts
+    file_content = file_content[:20000]
+
     prompt = f"""
 You are an expert software engineer.
 
@@ -39,19 +45,38 @@ The JSON must have exactly this structure:
   "estimated_complexity": "Low | Medium | High"
 }}
 
-Do not wrap the JSON in markdown.
+Do not include markdown.
 
 Source Code:
 
 {file_content}
 """
-    response = model.generate_content(prompt)
 
-    import json
+    response = model.generate_content(prompt)
 
     text = response.text.strip()
 
-    if text.startswith("```json"):
-        text = text.replace("```json", "").replace("```", "").strip()
+    # Remove markdown fences if present
+    text = re.sub(r"^```json", "", text)
+    text = re.sub(r"^```", "", text)
+    text = re.sub(r"```$", "", text)
+    text = text.strip()
 
-    return json.loads(text)
+    try:
+        return json.loads(text)
+
+    except Exception:
+
+        print("\nGemini returned invalid JSON:\n")
+        print(text)
+        print()
+
+        return {
+            "purpose": "AI summary could not be generated.",
+            "responsibilities": [],
+            "important_functions": [],
+            "potential_improvements": [
+                "Gemini returned an invalid response."
+            ],
+            "estimated_complexity": "Unknown",
+        }

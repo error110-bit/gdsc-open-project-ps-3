@@ -20,11 +20,28 @@ def summary(path: str = Query(...)):
             "summary": cache[file_hash]
         }
 
-    with open(path, "r", encoding="utf-8") as file:
+    with open(path, "r", encoding="utf-8", errors="ignore") as file:
         content = file.read()
-
-    summary_text = generate_summary(content)
-
+        MAX_CHARS = 20000
+        if len(content) > MAX_CHARS:
+            content = content[:MAX_CHARS]
+    try:
+        summary_text = generate_summary(content)
+    except Exception as e:
+        print("Gemini Error:", e)
+        return {
+            "cached": False,
+            "summary": {
+                "purpose": "AI summary could not be generated.",
+                "responsibilities": [],
+                "important_functions": [],
+                "potential_improvements": [
+                    "Gemini API quota exceeded or unavailable"
+                ],
+                "estimated_complexity": "Unknown"
+            }
+        }
+   
     cache[file_hash] = summary_text
 
     save_cache(cache)
