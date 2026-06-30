@@ -4,6 +4,8 @@ import GraphCanvas from "../components/GraphCanvas";
 import SummaryPanel from "../components/SummaryPanel";
 
 import { getRepositoryGraph } from "../api/repositoryApi";
+import { getFileSummary } from "../api/summaryApi";
+
 import { adaptGraphData } from "../adapters/graphAdapter";
 
 import "../styles/Dashboard.css";
@@ -15,11 +17,15 @@ function Dashboard() {
   const [ignoreMigrations, setIgnoreMigrations] = useState(true);
   const [ignoreTests, setIgnoreTests] = useState(true);
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   const [nodes, setNodes] = useState([]);
   const [edges, setEdges] = useState([]);
 
   const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+
+  const [aiSummary, setAiSummary] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -52,11 +58,28 @@ function Dashboard() {
 
       setSelectedFile(null);
       setSelectedNodeId(null);
+      setAiSummary("");
     } catch (err) {
       console.error(err);
       setError("Failed to analyze repository.");
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handleFileSelection(file) {
+    setSelectedFile(file);
+
+    setAiSummary("Loading AI analysis...");
+
+    try {
+      const response = await getFileSummary(file.path);
+
+      setAiSummary(response.summary);
+    } catch (error) {
+      console.error(error);
+
+      setAiSummary("Failed to generate AI summary.");
     }
   }
 
@@ -68,7 +91,7 @@ function Dashboard() {
         </h1>
 
         <p className="dashboard-subtitle">
-          Analyze repository structure, metrics, and dependencies.
+          Analyze repository structure, metrics, dependencies and AI insights.
         </p>
 
         <div className="toolbar">
@@ -103,6 +126,13 @@ function Dashboard() {
             />
             Ignore Tests
           </label>
+
+          <input
+            type="text"
+            placeholder="🔍 Search file..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
 
           <button
             onClick={handleAnalyzeRepository}
@@ -144,8 +174,7 @@ function Dashboard() {
           </div>
 
           <div className="summary-card">
-            🧠 Avg Complexity:{" "}
-            {repositorySummary.average_complexity}
+            🧠 Avg Complexity: {repositorySummary.average_complexity}
           </div>
         </div>
       )}
@@ -157,12 +186,16 @@ function Dashboard() {
             edges={edges}
             selectedNodeId={selectedNodeId}
             setSelectedNodeId={setSelectedNodeId}
-            setSelectedFile={setSelectedFile}
+            setSelectedFile={handleFileSelection}
+            searchTerm={searchTerm}
           />
         </div>
 
         <div className="sidebar">
-          <SummaryPanel selectedFile={selectedFile} />
+          <SummaryPanel
+            selectedFile={selectedFile}
+            aiSummary={aiSummary}
+          />
         </div>
       </div>
     </div>

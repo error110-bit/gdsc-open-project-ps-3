@@ -14,18 +14,34 @@ const nodeTypes = {
 function GraphCanvas({
   nodes,
   edges,
+  setSelectedFile,
   selectedNodeId,
   setSelectedNodeId,
-  setSelectedFile,
+  searchTerm,
 }) {
   const onNodeClick = (_, node) => {
-    setSelectedNodeId(node.id);
     setSelectedFile(node.data);
+    setSelectedNodeId(node.id);
   };
 
-  const enhancedNodes = nodes.map((node) => ({
-    ...node,
+  const filteredNodes = nodes.filter((node) =>
+    node.data.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
 
+  const visibleNodeIds = new Set(
+    filteredNodes.map((node) => node.id)
+  );
+
+  const filteredEdges = edges.filter(
+    (edge) =>
+      visibleNodeIds.has(edge.source) &&
+      visibleNodeIds.has(edge.target)
+  );
+
+  const enhancedNodes = filteredNodes.map((node) => ({
+    ...node,
     data: {
       ...node.data,
       isSelected: node.id === selectedNodeId,
@@ -36,12 +52,12 @@ function GraphCanvas({
     <div
       style={{
         width: "100%",
-        height: "100vh",
+        height: "100%",
       }}
     >
       <ReactFlow
         nodes={enhancedNodes}
-        edges={edges}
+        edges={filteredEdges}
         nodeTypes={nodeTypes}
         onNodeClick={onNodeClick}
         fitView

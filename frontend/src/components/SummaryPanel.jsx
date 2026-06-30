@@ -1,16 +1,15 @@
 import "../styles/SummaryPanel.css";
 
-function SummaryPanel({ selectedFile }) {
+function SummaryPanel({ selectedFile, aiSummary }) {
   if (!selectedFile) {
     return (
       <div className="summary-panel">
         <div className="summary-empty">
-          <h2>📄 File Information</h2>
+          <h2>🤖 AI Inspector</h2>
 
           <p>
-            Select a file from the graph to view
-            <br />
-            its metrics and details.
+            Select a file from the graph to generate an
+            AI explanation of the file.
           </p>
         </div>
       </div>
@@ -20,33 +19,45 @@ function SummaryPanel({ selectedFile }) {
   return (
     <div className="summary-panel">
       <h2 className="summary-title">
-        {selectedFile.name}
+        🤖 AI Inspector
       </h2>
 
       <div className="summary-path">
-        {selectedFile.path}
+        <strong>File</strong>
+        <br />
+        {selectedFile.name}
       </div>
 
       <hr className="summary-divider" />
 
+      <div
+        style={{
+          whiteSpace: "pre-wrap",
+          lineHeight: 1.7,
+          fontSize: "14px",
+        }}
+      >
+        {aiSummary}
+      </div>
+
+      <hr className="summary-divider" />
+
+      <h3
+        style={{
+          marginBottom: "15px",
+        }}
+      >
+        File Metrics
+      </h3>
+
       <div className="metrics-grid">
         <div className="metric-card">
           <div className="metric-card-title">
-            Lines of Code
+            LOC
           </div>
 
           <div className="metric-card-value">
             {selectedFile.loc}
-          </div>
-        </div>
-
-        <div className="metric-card">
-          <div className="metric-card-title">
-            Imports
-          </div>
-
-          <div className="metric-card-value">
-            {selectedFile.imports}
           </div>
         </div>
 
@@ -67,36 +78,6 @@ function SummaryPanel({ selectedFile }) {
 
           <div className="metric-card-value">
             {selectedFile.classes}
-          </div>
-        </div>
-
-        <div className="metric-card">
-          <div className="metric-card-title">
-            Loops
-          </div>
-
-          <div className="metric-card-value">
-            {selectedFile.loops}
-          </div>
-        </div>
-
-        <div className="metric-card">
-          <div className="metric-card-title">
-            Branches
-          </div>
-
-          <div className="metric-card-value">
-            {selectedFile.branches}
-          </div>
-        </div>
-
-        <div className="metric-card">
-          <div className="metric-card-title">
-            Try Blocks
-          </div>
-
-          <div className="metric-card-value">
-            {selectedFile.tryBlocks}
           </div>
         </div>
 
