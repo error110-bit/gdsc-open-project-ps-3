@@ -1,23 +1,25 @@
-import re
+import ast
+
 
 def get_dependencies(file_path):
     dependencies = []
 
     try:
         with open(file_path, "r", encoding="utf-8") as file:
-            content = file.read()
+            tree = ast.parse(file.read())
 
-        imports = re.findall(
-            r'^\s*(?:from\s+([^\s]+)\s+import|import\s+([^\s]+))',
-            content,
-            re.MULTILINE
-        )
+        for node in ast.walk(tree):
 
-        for imp1, imp2 in imports:
-            dependency = imp1 if imp1 else imp2
-            dependencies.append(dependency)
+            if isinstance(node, ast.Import):
+                for alias in node.names:
+                    dependencies.append(alias.name)
 
-    except:
+            elif isinstance(node, ast.ImportFrom):
+
+                if node.module:
+                    dependencies.append(node.module)
+
+    except Exception:
         pass
 
-    return dependencies
+    return list(set(dependencies))

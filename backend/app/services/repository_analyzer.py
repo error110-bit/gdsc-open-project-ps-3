@@ -2,7 +2,7 @@ from app.services.scanner import scan_repository
 from app.services.metrics import analyze_metrics
 from app.services.dependency_parser import get_dependencies
 
-
+print("7. Returning response")
 def analyze_repository(
     path,
     max_files=100,
@@ -32,3 +32,4 @@ def analyze_repository(
         )
 
     return analyzed_files
+print("6. Graph complete")

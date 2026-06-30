@@ -2,6 +2,46 @@ import os
 
 SUPPORTED_EXTENSIONS = {
     ".py",
+
+    ".js",
+    ".jsx",
+
+    ".ts",
+    ".tsx",
+
+    ".java",
+
+    ".c",
+    ".cpp",
+    ".h",
+    ".hpp",
+
+    ".cs",
+
+    ".go",
+
+    ".rs",
+
+    ".php",
+
+    ".rb",
+
+    ".swift",
+
+    ".kt",
+
+    ".html",
+    ".css",
+    ".scss",
+
+    ".json",
+    ".yaml",
+    ".yml",
+    ".xml",
+
+    ".sql",
+
+    ".sh",
 }
 
 IGNORED_DIRECTORIES = {
