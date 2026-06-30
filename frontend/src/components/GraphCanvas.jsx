@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import ReactFlow, {
   Background,
   Controls,
@@ -19,27 +20,87 @@ function GraphCanvas({
   setSelectedNodeId,
   searchTerm,
 }) {
-  const onNodeClick = (_, node) => {
-    setSelectedFile(node.data);
-    setSelectedNodeId(node.id);
-  };
+  const connectedNodes = useMemo(() => {
+    if (!selectedNodeId) return new Set();
+
+    const connected = new Set([selectedNodeId]);
+
+    edges.forEach((edge) => {
+      if (edge.source === selectedNodeId) {
+        connected.add(edge.target);
+      }
+
+      if (edge.target === selectedNodeId) {
+        connected.add(edge.source);
+      }
+    });
+
+    return connected;
+  }, [selectedNodeId, edges]);
 
   const displayNodes = nodes.map((node) => {
-    const matches =
+    const matchesSearch =
       searchTerm.trim() === "" ||
       node.data.name
         .toLowerCase()
         .includes(searchTerm.toLowerCase());
+
+    const fadedBySearch =
+      searchTerm && !matchesSearch;
+
+    const fadedByFocus =
+      selectedNodeId &&
+      !connectedNodes.has(node.id);
 
     return {
       ...node,
       data: {
         ...node.data,
         isSelected: node.id === selectedNodeId,
-        isDimmed: !matches,
+        isDimmed:
+          fadedBySearch || fadedByFocus,
       },
     };
   });
+
+  const displayEdges = edges.map((edge) => {
+    const highlighted =
+      selectedNodeId &&
+      (edge.source === selectedNodeId ||
+        edge.target === selectedNodeId);
+
+    return {
+      ...edge,
+
+      animated: highlighted && !searchTerm,
+
+      style: highlighted
+        ? {
+            stroke: "#60a5fa",
+            strokeWidth: 3,
+          }
+        : {
+            stroke: selectedNodeId
+              ? "#334155"
+              : "#64748b",
+            strokeWidth: selectedNodeId
+              ? 1
+              : 2,
+            opacity: selectedNodeId
+              ? 0.15
+              : 1,
+          },
+    };
+  });
+
+  const onNodeClick = (_, node) => {
+    setSelectedFile(node.data);
+    setSelectedNodeId(node.id);
+  };
+
+  const onPaneClick = () => {
+    setSelectedNodeId(null);
+  };
 
   return (
     <div
@@ -50,9 +111,10 @@ function GraphCanvas({
     >
       <ReactFlow
         nodes={displayNodes}
-        edges={edges}
+        edges={displayEdges}
         nodeTypes={nodeTypes}
         onNodeClick={onNodeClick}
+        onPaneClick={onPaneClick}
         fitView
         fitViewOptions={{
           padding: 0.2,
@@ -66,24 +128,24 @@ function GraphCanvas({
         }}
       >
         <Background
-          gap={32}
-          size={1.2}
-          color="#1f2937"
+          gap={24}
+          size={1}
+          color="#334155"
         />
 
         <MiniMap
           pannable
           zoomable
-          maskColor = "rgba(15,23,42,.65)"
           style={{
             background: "#111827",
-            border: "1px solid #334155",
-            borderRadius: 12,
           }}
           nodeColor={() => "#3b82f6"}
         />
 
-        <Controls position='bottom-left'showInteractive={false} />
+        <Controls
+          position="bottom-left"
+          showInteractive={false}
+        />
       </ReactFlow>
     </div>
   );
