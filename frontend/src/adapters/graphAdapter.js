@@ -1,17 +1,20 @@
+const COLUMNS = 5;
+const HORIZONTAL_SPACING = 260;
+const VERTICAL_SPACING = 190;
+
 export function adaptGraphData(graphData) {
   const nodes = graphData.nodes.map((node, index) => ({
     id: node.id,
     type: "fileNode",
 
     position: {
-      x: (index % 4) * 250,
-      y: Math.floor(index / 4) * 180,
+      x: (index % COLUMNS) * HORIZONTAL_SPACING,
+      y: Math.floor(index / COLUMNS) * VERTICAL_SPACING,
     },
 
     data: {
       name: node.path.split("/").slice(-2).join("/"),
       path: node.path,
-      module: node.module,
 
       loc: node.metrics.loc,
       imports: node.metrics.imports,
@@ -28,6 +31,13 @@ export function adaptGraphData(graphData) {
     id: `${edge.source}-${edge.target}-${index}`,
     source: edge.source,
     target: edge.target,
+
+    animated: false,
+
+    style: {
+      stroke: "#64748b",
+      strokeWidth: 1.5,
+    },
   }));
 
   return {

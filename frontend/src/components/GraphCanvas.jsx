@@ -24,7 +24,7 @@ function GraphCanvas({
     setSelectedNodeId(node.id);
   };
 
-  const filteredNodes = nodes.map((node) => {
+  const displayNodes = nodes.map((node) => {
     const matches =
       searchTerm.trim() === "" ||
       node.data.name
@@ -49,15 +49,41 @@ function GraphCanvas({
       }}
     >
       <ReactFlow
-        nodes={filteredNodes}
+        nodes={displayNodes}
         edges={edges}
         nodeTypes={nodeTypes}
         onNodeClick={onNodeClick}
         fitView
+        fitViewOptions={{
+          padding: 0.2,
+        }}
+        minZoom={0.2}
+        maxZoom={2}
+        defaultViewport={{
+          x: 0,
+          y: 0,
+          zoom: 0.8,
+        }}
       >
-        <Background />
-        <MiniMap />
-        <Controls />
+        <Background
+          gap={32}
+          size={1.2}
+          color="#1f2937"
+        />
+
+        <MiniMap
+          pannable
+          zoomable
+          maskColor = "rgba(15,23,42,.65)"
+          style={{
+            background: "#111827",
+            border: "1px solid #334155",
+            borderRadius: 12,
+          }}
+          nodeColor={() => "#3b82f6"}
+        />
+
+        <Controls position='bottom-left'showInteractive={false} />
       </ReactFlow>
     </div>
   );
