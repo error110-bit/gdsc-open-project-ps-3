@@ -3,9 +3,19 @@ import { Handle, Position } from "reactflow";
 import "../styles/FileNode.css";
 
 function FileNode({ data }) {
+  let complexityClass = "low";
+
+  if (data.complexity >= 6) {
+    complexityClass = "high";
+  } else if (data.complexity >= 3) {
+    complexityClass = "medium";
+  }
+
   return (
     <div
-      className={`file-node ${data.isSelected ? "selected" : ""}`}
+      className={`file-node ${complexityClass} ${
+        data.isSelected ? "selected" : ""
+      } ${data.isDimmed ? "dimmed" : ""}`}
     >
       <Handle
         type="target"
@@ -16,7 +26,7 @@ function FileNode({ data }) {
         className="file-name"
         title={data.name}
       >
-        {data.name}
+        📄 {data.name}
       </h4>
 
       <div className="file-metrics">
@@ -37,7 +47,9 @@ function FileNode({ data }) {
 
         <div className="metric">
           <span className="metric-label">Complexity</span>
-          <span className="metric-value">{data.complexity}</span>
+          <span className="metric-value">
+            {data.complexity}
+          </span>
         </div>
       </div>
 

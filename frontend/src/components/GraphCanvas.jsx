@@ -24,29 +24,22 @@ function GraphCanvas({
     setSelectedNodeId(node.id);
   };
 
-  const filteredNodes = nodes.filter((node) =>
-    node.data.name
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
-  );
+  const filteredNodes = nodes.map((node) => {
+    const matches =
+      searchTerm.trim() === "" ||
+      node.data.name
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
 
-  const visibleNodeIds = new Set(
-    filteredNodes.map((node) => node.id)
-  );
-
-  const filteredEdges = edges.filter(
-    (edge) =>
-      visibleNodeIds.has(edge.source) &&
-      visibleNodeIds.has(edge.target)
-  );
-
-  const enhancedNodes = filteredNodes.map((node) => ({
-    ...node,
-    data: {
-      ...node.data,
-      isSelected: node.id === selectedNodeId,
-    },
-  }));
+    return {
+      ...node,
+      data: {
+        ...node.data,
+        isSelected: node.id === selectedNodeId,
+        isDimmed: !matches,
+      },
+    };
+  });
 
   return (
     <div
@@ -56,8 +49,8 @@ function GraphCanvas({
       }}
     >
       <ReactFlow
-        nodes={enhancedNodes}
-        edges={filteredEdges}
+        nodes={filteredNodes}
+        edges={edges}
         nodeTypes={nodeTypes}
         onNodeClick={onNodeClick}
         fitView

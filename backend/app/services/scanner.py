@@ -14,6 +14,12 @@ IGNORED_DIRECTORIES = {
     "build",
 }
 
+IGNORED_FILES = {
+    "__init__.py",
+    "apps.py",
+}
+
+
 
 def scan_repository(
     path,
@@ -42,6 +48,9 @@ def scan_repository(
             if os.path.splitext(filename)[1] not in SUPPORTED_EXTENSIONS:
                 continue
 
+            if filename in IGNORED_FILES:
+                continue
+
             if ignore_tests and filename.lower().startswith("test"):
                 continue
 
@@ -52,13 +61,23 @@ def scan_repository(
                 path,
             )
 
-            files.append(
-                {
-                    "name": filename,
-                    "path": absolute_path,
-                    "relative_path": relative_path,
-                }
-            )
+            relative_parts = relative_path.split(os.sep)
+
+            module = "Root"
+
+            if "apps" in relative_parts:
+                index = relative_parts.index("apps")
+                if index + 1 < len(relative_parts):
+                    module = relative_parts[index + 1]
+            elif len(relative_parts) > 1:
+                module = relative_parts[0]
+
+            files.append({
+                "name": filename,
+                "path": absolute_path,
+                "relative_path": relative_path,
+                "module": module,
+            })
 
             if len(files) >= max_files:
                 return files

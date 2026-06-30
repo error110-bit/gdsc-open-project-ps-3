@@ -11,6 +11,7 @@ export function adaptGraphData(graphData) {
     data: {
       name: node.path.split("/").slice(-2).join("/"),
       path: node.path,
+      module: node.module,
 
       loc: node.metrics.loc,
       imports: node.metrics.imports,

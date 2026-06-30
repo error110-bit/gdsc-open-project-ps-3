@@ -49,15 +49,15 @@ function Dashboard() {
         ignoreTests,
       });
 
-      setRepositorySummary(backendGraph.summary);
-
       const graph = adaptGraphData(backendGraph);
+
+      setRepositorySummary(backendGraph.summary);
 
       setNodes(graph.nodes);
       setEdges(graph.edges);
 
-      setSelectedFile(null);
       setSelectedNodeId(null);
+      setSelectedFile(null);
       setAiSummary("");
     } catch (err) {
       console.error(err);
@@ -81,13 +81,6 @@ function Dashboard() {
 
       setAiSummary("Failed to generate AI summary.");
     }
-
-    const response = await getFileSummary(file.path);
-
-console.log(response.summary);
-
-setAiSummary(response.summary);
-``
   }
 
   return (
@@ -153,9 +146,8 @@ setAiSummary(response.summary);
       {error && (
         <div
           style={{
-            color: "red",
+            color: "#ef4444",
             padding: "12px 20px",
-            background: "#fef2f2",
           }}
         >
           {error}
