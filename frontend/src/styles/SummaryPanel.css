@@ -1,58 +1,135 @@
 .summary-panel {
-  padding: 20px;
-  background: white;
   height: 100%;
+  padding: 28px;
+  overflow-y: auto;
+  background: #111827;
+  color: #f8fafc;
 }
 
 .summary-empty {
-  color: #6b7280;
   text-align: center;
-  margin-top: 40px;
-  line-height: 1.6;
+  margin-top: 100px;
+  color: #94a3b8;
+  line-height: 1.8;
 }
 
 .summary-title {
-  margin: 0;
-  font-size: 24px;
+  font-size: 32px;
   font-weight: 700;
-  color: #111827;
-  word-break: break-word;
+  margin-bottom: 8px;
 }
 
 .summary-path {
-  margin-top: 10px;
-  font-size: 13px;
-  color: #6b7280;
-  word-break: break-all;
+  color: #94a3b8;
+  font-size: 14px;
+  word-break: break-word;
+  margin-bottom: 20px;
 }
 
 .summary-divider {
-  margin: 20px 0;
   border: none;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid #334155;
+  margin: 24px 0;
+}
+
+.loading-ai {
+  padding: 18px;
+  border-radius: 12px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: #cbd5e1;
+  animation: pulse 1.5s infinite;
+}
+
+.ai-section {
+  margin-bottom: 28px;
+}
+
+.ai-section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  font-size: 20px;
+  font-weight: 700;
+
+  color: white;
+
+  margin-bottom: 14px;
+}
+
+.ai-text {
+  line-height: 1.8;
+  color: #dbe4f0;
+}
+
+.ai-list {
+  margin: 0;
+  padding-left: 22px;
+}
+
+.ai-list li {
+  margin-bottom: 10px;
+  line-height: 1.7;
+  color: #dbe4f0;
+}
+
+.summary-subtitle {
+  font-size: 22px;
+  margin-bottom: 18px;
 }
 
 .metrics-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  gap: 14px;
 }
 
 .metric-card {
-  background: #f8fafc;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  padding: 12px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 14px;
+  padding: 18px;
+  transition: all 0.2s ease;
+}
+
+.metric-card:hover {
+  border-color: #3b82f6;
+  transform: translateY(-3px);
 }
 
 .metric-card-title {
-  font-size: 12px;
-  color: #6b7280;
+  font-size: 13px;
+  color: #94a3b8;
 }
 
 .metric-card-value {
-  margin-top: 6px;
-  font-size: 20px;
+  margin-top: 10px;
+  font-size: 26px;
   font-weight: 700;
-  color: #111827;
+  color: white;
+}
+
+@keyframes pulse {
+
+  0% {
+    opacity: .55;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: .55;
+  }
+
+}
+
+.ai-list li::marker {
+  color: #60a5fa;
+}
+
+.ai-list li {
+  padding-left: 4px;
 }

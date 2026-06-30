@@ -81,6 +81,13 @@ function Dashboard() {
 
       setAiSummary("Failed to generate AI summary.");
     }
+
+    const response = await getFileSummary(file.path);
+
+console.log(response.summary);
+
+setAiSummary(response.summary);
+``
   }
 
   return (

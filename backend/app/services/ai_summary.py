@@ -18,31 +18,40 @@ You are an expert software engineer.
 
 Analyze the following source code.
 
-Return ONLY plain text.
+Return ONLY valid JSON.
 
-Structure your answer exactly like this:
+The JSON must have exactly this structure:
 
-Purpose:
-...
+{{
+  "purpose": "...",
+  "responsibilities": [
+    "...",
+    "..."
+  ],
+  "important_functions": [
+    "...",
+    "..."
+  ],
+  "potential_improvements": [
+    "...",
+    "..."
+  ],
+  "estimated_complexity": "Low | Medium | High"
+}}
 
-Responsibilities:
-- ...
-- ...
-
-Important Functions or Classes:
-- ...
-
-Potential Improvements:
-- ...
-
-Estimated Complexity:
-Low / Medium / High
+Do not wrap the JSON in markdown.
 
 Source Code:
 
 {file_content}
 """
-
     response = model.generate_content(prompt)
 
-    return response.text
+    import json
+
+    text = response.text.strip()
+
+    if text.startswith("```json"):
+        text = text.replace("```json", "").replace("```", "").strip()
+
+    return json.loads(text)

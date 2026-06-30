@@ -2,109 +2,159 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background: #f8fafc;
+  background: #0f172a;
+  color: #f8fafc;
+  overflow: hidden;
 }
 
 .dashboard-header {
-  padding: 20px;
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
+  background: #111827;
+  padding: 22px 28px;
+  border-bottom: 1px solid #1f2937;
+  flex-shrink: 0;
+  z-index: 20;
 }
 
 .dashboard-title {
   margin: 0;
-  font-size: 28px;
+  font-size: 2.1rem;
   font-weight: 700;
-  color: #111827;
+  color: #ffffff;
 }
 
 .dashboard-subtitle {
-  margin-top: 6px;
-  color: #6b7280;
+  margin-top: 8px;
+  color: #94a3b8;
   font-size: 15px;
 }
 
 .toolbar {
+  margin-top: 22px;
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 14px;
   align-items: center;
-  margin-top: 20px;
+}
+
+.toolbar input[type="text"],
+.toolbar input[type="number"] {
+  background: #1e293b;
+  color: #f8fafc;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 14px;
+  transition: all 0.2s ease;
 }
 
 .toolbar input[type="text"] {
   flex: 1;
-  min-width: 320px;
-  padding: 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 15px;
+  min-width: 260px;
 }
 
 .toolbar input[type="number"] {
   width: 90px;
-  padding: 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
+}
+
+.toolbar input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.toolbar input::placeholder {
+  color: #94a3b8;
 }
 
 .toolbar label {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #374151;
+  color: #cbd5e1;
   font-size: 14px;
+  cursor: pointer;
 }
 
 .toolbar button {
-  background: #2563eb;
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
   color: white;
   border: none;
-  padding: 12px 18px;
-  border-radius: 8px;
-  cursor: pointer;
+  border-radius: 10px;
+  padding: 12px 20px;
   font-weight: 600;
-  transition: 0.2s;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.toolbar button:hover:not(:disabled) {
-  background: #1d4ed8;
+.toolbar button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(59, 130, 246, 0.35);
 }
 
 .toolbar button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
 }
 
 .summary-bar {
   display: flex;
-  flex-wrap: wrap;
   gap: 16px;
-  padding: 14px 20px;
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
+  flex-wrap: wrap;
+  padding: 16px 28px;
+  background: #111827;
+  border-bottom: 1px solid #1f2937;
 }
 
 .summary-card {
-  background: #eff6ff;
-  padding: 10px 16px;
-  border-radius: 8px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 14px 18px;
+  color: #f8fafc;
   font-weight: 600;
-  color: #1e3a8a;
+  transition: all 0.2s ease;
+}
+
+.summary-card:hover {
+  border-color: #3b82f6;
+  transform: translateY(-2px);
 }
 
 .dashboard-content {
-  display: flex;
   flex: 1;
+  display: flex;
+  overflow: hidden;
 }
 
 .graph-section {
-  flex: 3;
+  flex: 1;
+  overflow: auto;
+  background: #0f172a;
 }
 
 .sidebar {
-  flex: 1;
-  border-left: 1px solid #e5e7eb;
-  background: white;
+  width: 420px;
+  min-width: 420px;
+  background: #111827;
+  border-left: 1px solid #1f2937;
   overflow-y: auto;
+}
+
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111827;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
 }
