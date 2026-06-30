@@ -94,6 +94,10 @@ function GraphCanvas({
   });
 
   const onNodeClick = (_, node) => {
+    if (selectedNodeId === node.id) {
+      setSelectedNodeId(null);
+      return;
+    }
     setSelectedFile(node.data);
     setSelectedNodeId(node.id);
   };
