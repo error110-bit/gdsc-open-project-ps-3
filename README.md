@@ -1,16 +1,14 @@
 # gdsc-open-project-ps-3
 
-### AI-Powered Repository Visualizer
+## AI-Powered Repository Visualizer
 
-RepoLens is an AI-powered repository visualization tool that helps developers understand unfamiliar codebases through interactive dependency graphs, repository metrics, and AI-generated code explanations.
+RepoLens is an AI-powered repository visualization tool designed to help developers understand unfamiliar codebases through interactive dependency graphs, repository metrics, and AI-generated source code explanations.
 
-The application performs static code analysis to construct a dependency graph, computes file-level metrics, and leverages **Google Gemini AI** to generate concise explanations for individual source files. It provides an intuitive interface for exploring repository architecture and understanding relationships between components.
+The application performs static code analysis on a local repository, extracts dependencies between source files, computes code metrics, and leverages **Google Gemini AI** to generate structured explanations for individual files. By combining repository visualization with AI insights, RepoLens simplifies repository exploration and architecture understanding.
 
 ---
 
 # 📷 Screenshots
-
-> Replace the image paths below with your screenshots.
 
 ## Dashboard
 
@@ -45,34 +43,34 @@ The application performs static code analysis to construct a dependency graph, c
 # ✨ Key Highlights
 
 - 🕸 Interactive dependency graph visualization
-- 🤖 AI-powered source code explanations using Gemini
+- 🤖 AI-powered code explanations using Google Gemini
 - 🎯 Focus Mode for dependency exploration
 - 🔍 Instant repository search
-- 📈 Repository-level code metrics
+- 📈 Repository-wide code metrics
 - 🎨 Complexity-based node coloring
-- 🌙 Modern dark-themed responsive UI
-- ⚡ AI response caching for faster repeated requests
+- ⚡ Smart AI response caching
 - 🌍 Multi-language repository scanning
+- 🌙 Modern dark-themed responsive interface
 
 ---
 
 # 🚀 Features
 
-## 📂 Repository Analysis
+## Repository Analysis
 
-- Analyze local repositories
-- Recursive directory scanning
+- Recursive repository scanning
 - Configurable maximum file limit
 - Ignore migration files
 - Ignore test files
 - Multi-language repository scanning
+- Repository statistics generation
 
 ---
 
-## 🕸 Interactive Dependency Graph
+## Interactive Dependency Graph
 
 - Interactive graph visualization
-- Dependency mapping
+- Dependency mapping between files
 - Zoom, pan and minimap support
 - Search functionality
 - Focus Mode for dependency exploration
@@ -80,9 +78,9 @@ The application performs static code analysis to construct a dependency graph, c
 
 ---
 
-## 🤖 AI Inspector
+## AI Inspector
 
-Generate AI explanations for any source file.
+Generate AI explanations for any selected source file.
 
 Each explanation contains:
 
@@ -92,17 +90,17 @@ Each explanation contains:
 - Potential Improvements
 - Estimated Complexity
 
-AI summaries are cached locally to reduce repeated API requests.
+Generated summaries are cached locally to reduce repeated API calls.
 
 ---
 
-## 📈 Repository Metrics
+## Repository Metrics
 
-Each file includes:
+Each source file includes:
 
 - Lines of Code (LOC)
-- Number of Functions
-- Number of Classes
+- Functions
+- Classes
 - Loops
 - Branches
 - Try Blocks
@@ -118,7 +116,7 @@ Repository overview includes:
 
 ---
 
-## 🌍 Multi-language Support
+## Multi-language Support
 
 Repository scanning currently supports:
 
@@ -144,6 +142,122 @@ Repository scanning currently supports:
 
 ---
 
+# ⚙️ Design & Implementation
+
+## Repository Analysis
+
+The backend recursively scans a repository while respecting user-defined options such as maximum file limit, ignored test files, and ignored migration files.
+
+For every supported source file, the application extracts:
+
+- File dependencies
+- Code metrics
+- Relative file paths
+- Repository statistics
+
+---
+
+## Dependency Graph
+
+Each source file is represented as a graph node.
+
+Python import statements are analyzed using Python's Abstract Syntax Tree (AST) to construct directed edges representing dependencies between files.
+
+The resulting graph is rendered interactively using **React Flow**.
+
+---
+
+## Complexity Score
+
+RepoLens estimates implementation complexity using lightweight static code analysis.
+
+For Python files, the complexity score is calculated as:
+
+```text
+Complexity =
+Functions
++ (Classes × 2)
++ (Loops × 2)
++ Branches
++ Try Blocks
+```
+
+This heuristic provides a quick estimate of code complexity without requiring heavyweight static analysis tools.
+
+---
+
+## AI Inspector
+
+When a file is selected, its contents are sent to **Google Gemini AI**.
+
+Gemini returns a structured JSON response containing:
+
+- Purpose
+- Responsibilities
+- Important Functions
+- Suggested Improvements
+- Estimated Complexity
+
+---
+
+## Smart AI Cache
+
+To reduce API usage and improve response times, generated AI summaries are cached using a hash of the file contents.
+
+If the same file is analyzed again without modification, the cached summary is returned instead of making another Gemini API request.
+
+---
+
+## Focus Mode
+
+Selecting a node highlights only the selected file and its directly connected dependencies while fading unrelated nodes and edges.
+
+This improves readability for repositories containing a large number of files.
+
+---
+
+# 🏗 Architecture
+
+```text
+                     User
+
+                       │
+
+                       ▼
+
+               React Frontend
+
+                       │
+                REST API (Axios)
+
+                       │
+
+                       ▼
+
+               FastAPI Backend
+
+      ┌──────────────┼──────────────┐
+      │              │              │
+      ▼              ▼              ▼
+
+ Repository      Metrics       AI Summary
+   Scanner      Analyzer        (Gemini)
+
+      │
+
+      ▼
+
+ Dependency Graph Builder
+
+      │
+
+      ▼
+
+ React Flow Visualization
+```
+
+---
+
 # 🛠 Tech Stack
 
 ## Frontend
@@ -158,14 +272,14 @@ Repository scanning currently supports:
 - FastAPI
 - Python
 - AST
-- Google Gemini API
+- Google Gemini AI
 
 ---
 
 # 📁 Project Structure
 
-```
-GDSC-OPEN-PROJECT-PS-3/
+```text
+gdsc-open-project-ps-3/
 │
 ├── backend/
 │   ├── app/
@@ -176,20 +290,21 @@ GDSC-OPEN-PROJECT-PS-3/
 │   │   └── main.py
 │
 ├── frontend/
-│   ├── api/
-│   ├── adapters/
-│   ├── components/
-│   ├── pages/
-│   └── styles/
+│   ├── src/
+│   │   ├── api/
+│   │   ├── adapters/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   └── styles/
+│
+├── screenshots/
 │
 └── README.md
 ```
 
 ---
 
-# ⚙ Prerequisites
-
-Before running the project, ensure you have:
+# ⚙️ Prerequisites
 
 - Python 3.11+
 - Node.js 18+
@@ -218,7 +333,7 @@ cd backend
 python -m venv venv
 ```
 
-Activate virtual environment
+Activate the virtual environment.
 
 ### Linux / macOS
 
@@ -232,25 +347,25 @@ source venv/bin/activate
 venv\Scripts\activate
 ```
 
-Install dependencies
+Install dependencies.
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Create a `.env` file
+Create a `.env` file.
 
 ```env
 GEMINI_API_KEY=YOUR_API_KEY
 ```
 
-Run backend
+Run the backend.
 
 ```bash
 uvicorn app.main:app --reload
 ```
 
-Backend runs on
+Backend:
 
 ```
 http://127.0.0.1:8000
@@ -268,7 +383,7 @@ npm install
 npm run dev
 ```
 
-Frontend runs on
+Frontend:
 
 ```
 http://localhost:5173
@@ -280,19 +395,19 @@ http://localhost:5173
 
 1. Start the backend server.
 2. Start the frontend.
-3. Enter the path of a local repository.
-4. Configure analysis options if required.
+3. Enter a local repository path.
+4. Configure analysis options.
 5. Click **Analyze Repository**.
 6. Explore the dependency graph.
 7. Search for files.
-8. Click any node to enter **Focus Mode**.
-9. View AI-generated explanations in the AI Inspector.
+8. Click any node to activate **Focus Mode**.
+9. View AI-generated explanations using the AI Inspector.
 
 ---
 
 # 🔌 API Endpoints
 
-## Analyze Repository
+### Analyze Repository
 
 ```
 POST /graph
@@ -300,38 +415,38 @@ POST /graph
 
 Returns:
 
-- Nodes
+- Repository graph
 - Dependency edges
-- Repository metrics
+- Repository statistics
 
 ---
 
-## Generate AI Summary
+### Generate AI Summary
 
 ```
 GET /summary
 ```
 
-Returns an AI-generated explanation for a selected file.
+Returns an AI-generated explanation for the selected file.
 
 ---
 
 # 📌 Assumptions
 
-- Repository is available locally.
-- Source files are accessible.
+- The repository exists locally.
+- Source files are readable.
 - A valid Gemini API key is configured.
 - Internet connectivity is available for AI summary generation.
-- Dependency graph visualization currently supports Python repositories.
-- AI summaries are cached locally to reduce repeated API requests.
+- Dependency visualization is currently implemented for Python repositories.
+- AI summaries are cached locally to reduce repeated API calls.
 
 ---
 
 # 💡 Challenges Faced
 
-- Building an accurate dependency graph from repository imports.
-- Keeping large repository graphs readable and interactive.
-- Integrating Gemini AI while handling API rate limits and caching.
+- Accurately resolving dependencies between Python modules.
+- Keeping repository graphs readable for larger projects.
+- Integrating Gemini AI while handling API rate limits.
 - Supporting repository scanning across multiple programming languages.
 
 ---
@@ -339,14 +454,13 @@ Returns an AI-generated explanation for a selected file.
 # 🚀 Future Improvements
 
 - GitHub repository import
-- Folder picker support
-- JavaScript dependency graph generation
-- Java dependency graph generation
-- Folder-level visualization
+- Folder picker
+- Dependency visualization for JavaScript and Java
+- Folder-level graph visualization
 - Export graph as PNG/PDF
 - Circular dependency detection
-- Repository architecture summary
-- Code smell analysis
+- AI-generated repository architecture summary
+- Code smell detection
 
 ---
 
@@ -361,4 +475,4 @@ Returns an AI-generated explanation for a selected file.
 
 # 📄 License
 
-This project was developed as part of the **GDSC Open Project (PS-3)**.
+This project was developed as part of the **(GDSC) Open Project (PS-3)** for educational purposes.
